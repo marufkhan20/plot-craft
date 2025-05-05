@@ -5,15 +5,18 @@ import APISettings from "@/components/dashboard/APISettings";
 import BuyCredits from "@/components/dashboard/BuyCredits";
 import CreditHistory from "@/components/dashboard/CreditHistory";
 import MyBooks from "@/components/dashboard/MyBooks";
+import PaymentStatusModal from "@/components/dashboard/PaymentStatusModal";
 import Button from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { Book, CreditCard, LogOut, Settings, ShoppingCart } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const { data: sessionData, status } = useSession();
   const { user } = sessionData || {};
   const [activeTab, setActiveTab] = useState<
@@ -25,6 +28,30 @@ export default function DashboardPage() {
     signOut();
   };
 
+  // Check for activeTab in URL params
+  useEffect(() => {
+    const tabParam = searchParams.get("activeTab");
+    if (
+      tabParam === "buy-credits" ||
+      tabParam === "credits" ||
+      tabParam === "settings" ||
+      tabParam === "plots"
+    ) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
+
+  // Handle tab change with URL update
+  const handleTabChange = (
+    tab: "plots" | "credits" | "settings" | "buy-credits"
+  ) => {
+    setActiveTab(tab);
+    // Update URL without full page reload
+    const url = new URL(window.location.href);
+    url.searchParams.set("activeTab", tab);
+    router.replace(url.pathname + url.search);
+  };
+
   useEffect(() => {
     if (status === "unauthenticated") {
       return router.push("/login");
@@ -33,6 +60,9 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
+      {/* Payment Status Modal */}
+      <PaymentStatusModal />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
@@ -61,7 +91,7 @@ export default function DashboardPage() {
 
               <div className="space-y-2">
                 <motion.button
-                  onClick={() => setActiveTab("plots")}
+                  onClick={() => handleTabChange("plots")}
                   className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                     activeTab === "plots"
                       ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400"
@@ -75,7 +105,7 @@ export default function DashboardPage() {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => setActiveTab("credits")}
+                  onClick={() => handleTabChange("credits")}
                   className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                     activeTab === "credits"
                       ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400"
@@ -89,7 +119,7 @@ export default function DashboardPage() {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => setActiveTab("buy-credits")}
+                  onClick={() => handleTabChange("buy-credits")}
                   className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                     activeTab === "buy-credits"
                       ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400"
@@ -103,7 +133,7 @@ export default function DashboardPage() {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => setActiveTab("settings")}
+                  onClick={() => handleTabChange("settings")}
                   className={`w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                     activeTab === "settings"
                       ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400"
@@ -142,7 +172,7 @@ export default function DashboardPage() {
                 <Button
                   variant="primary"
                   fullWidth
-                  onClick={() => setActiveTab("buy-credits")}
+                  onClick={() => handleTabChange("buy-credits")}
                 >
                   Buy Credits
                 </Button>

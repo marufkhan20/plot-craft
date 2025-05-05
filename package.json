@@ -59,7 +59,6 @@
     "nodemailer": "latest",
     "prisma": "latest",
     "react": "^19",
-    "react-day-picker": "8.10.1",
     "react-dom": "^19",
     "react-hook-form": "^7.56.2",
     "react-resizable-panels": "^2.1.7",
