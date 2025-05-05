@@ -148,7 +148,6 @@ export default function APISettings() {
               <Button
                 variant="primary"
                 onClick={handleSave}
-                isLoading={loading}
                 disabled={!apiKeys.openai && !apiKeys.openrouter}
               >
                 Save API Keys

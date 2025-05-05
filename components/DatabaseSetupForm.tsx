@@ -1,29 +1,31 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Database, Check, AlertCircle, Loader2 } from "lucide-react"
-import Button from "@/components/ui/Button"
+import Button from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { AlertCircle, Check, Database, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export default function DatabaseSetupForm() {
-  const [databaseUrl, setDatabaseUrl] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
+  const [databaseUrl, setDatabaseUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setSuccess(false)
-    setIsLoading(true)
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+    setIsLoading(true);
 
     // Validate the database URL format
     if (!databaseUrl.startsWith("postgresql://")) {
-      setError("Invalid database URL format. It should start with postgresql://")
-      setIsLoading(false)
-      return
+      setError(
+        "Invalid database URL format. It should start with postgresql://"
+      );
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -35,27 +37,29 @@ export default function DatabaseSetupForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ databaseUrl }),
-      })
+      });
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.message || "Failed to set up database")
+        const data = await response.json();
+        throw new Error(data.message || "Failed to set up database");
       }
 
       // Show success message
-      setSuccess(true)
+      setSuccess(true);
 
       // In a real app, you might want to redirect or reload the page
       // to apply the new database connection
       setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+        window.location.reload();
+      }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred")
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred"
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
@@ -65,7 +69,9 @@ export default function DatabaseSetupForm() {
         </div>
         <div>
           <h2 className="text-xl font-bold">Database Setup</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Connect your Supabase or Neon database</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Connect your Supabase or Neon database
+          </p>
         </div>
       </div>
 
@@ -77,7 +83,9 @@ export default function DatabaseSetupForm() {
         >
           <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
           <div>
-            <h3 className="font-medium text-red-800 dark:text-red-300">Connection Error</h3>
+            <h3 className="font-medium text-red-800 dark:text-red-300">
+              Connection Error
+            </h3>
             <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
           </div>
         </motion.div>
@@ -91,7 +99,9 @@ export default function DatabaseSetupForm() {
         >
           <Check className="h-5 w-5 text-green-500 mt-0.5" />
           <div>
-            <h3 className="font-medium text-green-800 dark:text-green-300">Connection Successful</h3>
+            <h3 className="font-medium text-green-800 dark:text-green-300">
+              Connection Successful
+            </h3>
             <p className="text-sm text-green-600 dark:text-green-400">
               Database connected successfully! Reloading application...
             </p>
@@ -101,7 +111,10 @@ export default function DatabaseSetupForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="database-url" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="database-url"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             Database URL
           </label>
           <input
@@ -114,7 +127,8 @@ export default function DatabaseSetupForm() {
             required
           />
           <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-            Find this in your Supabase project under Settings → Database → Connection string, or in your Neon dashboard.
+            Find this in your Supabase project under Settings → Database →
+            Connection string, or in your Neon dashboard.
           </p>
         </div>
 
@@ -139,18 +153,29 @@ export default function DatabaseSetupForm() {
       </form>
 
       <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quick Help</h3>
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Quick Help
+        </h3>
         <ul className="text-xs text-gray-500 dark:text-gray-400 space-y-1 list-disc pl-4">
-          <li>Make sure your database is publicly accessible or has the correct IP allowlist</li>
-          <li>For Supabase, enable "Connection Pooling" for better performance</li>
-          <li>For Neon, create a dedicated branch for your development environment</li>
+          <li>
+            Make sure your database is publicly accessible or has the correct IP
+            allowlist
+          </li>
+          <li>
+            For Supabase, enable "Connection Pooling" for better performance
+          </li>
+          <li>
+            For Neon, create a dedicated branch for your development environment
+          </li>
           <li>
             After connecting, run{" "}
-            <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">npx prisma db push</code> to create your
-            tables
+            <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">
+              npx prisma db push
+            </code>{" "}
+            to create your tables
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }

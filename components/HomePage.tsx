@@ -1,13 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useRef } from "react"
-import { useRouter } from "next/navigation"
-import { BookOpen, Sparkles, Users, LayoutGrid, Lightbulb, Award } from "lucide-react"
-import { motion, useInView, useScroll } from "framer-motion"
-import Button from "@/components/ui/Button"
-import { useAuth } from "@/context/AuthContext"
-import DemoAnimation from "./DemoAnimation"
+import Button from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
+import { motion, useInView, useScroll } from "framer-motion";
+import {
+  Award,
+  BookOpen,
+  LayoutGrid,
+  Lightbulb,
+  Sparkles,
+  Users,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useRef } from "react";
+import DemoAnimation from "./DemoAnimation";
 
 const FeatureCard = ({
   icon,
@@ -15,13 +22,13 @@ const FeatureCard = ({
   description,
   delay,
 }: {
-  icon: React.ReactNode
-  title: string
-  description: string
-  delay: number
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  delay: number;
 }) => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
     <motion.div
@@ -35,11 +42,13 @@ const FeatureCard = ({
       <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-6">
         {icon}
       </div>
-      <h3 className="text-xl font-serif font-semibold text-gray-900 dark:text-gray-100 mb-3">{title}</h3>
+      <h3 className="text-xl font-serif font-semibold text-gray-900 dark:text-gray-100 mb-3">
+        {title}
+      </h3>
       <p className="text-gray-600 dark:text-gray-300">{description}</p>
     </motion.div>
-  )
-}
+  );
+};
 
 const PricingCard = ({
   title,
@@ -48,20 +57,22 @@ const PricingCard = ({
   popular = false,
   delay = 0,
 }: {
-  title: string
-  price: string
-  features: { included: boolean; text: string }[]
-  popular?: boolean
-  delay?: number
+  title: string;
+  price: string;
+  features: { included: boolean; text: string }[];
+  popular?: boolean;
+  delay?: number;
 }) => {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
     <motion.div
       ref={ref}
       className={`bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md ${
-        popular ? "border-2 border-indigo-500 relative z-10" : "border border-gray-100 dark:border-gray-700"
+        popular
+          ? "border-2 border-indigo-500 relative z-10"
+          : "border border-gray-100 dark:border-gray-700"
       }`}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -74,7 +85,11 @@ const PricingCard = ({
           <motion.span
             className="bg-indigo-500 text-white px-4 py-1 rounded-full text-sm font-medium"
             animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+            transition={{
+              duration: 2,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
           >
             Most Popular
           </motion.span>
@@ -82,9 +97,13 @@ const PricingCard = ({
       )}
 
       <div className="text-center mb-6">
-        <h3 className="text-xl font-serif font-semibold text-gray-900 dark:text-gray-100 mb-2">{title}</h3>
+        <h3 className="text-xl font-serif font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          {title}
+        </h3>
         <div className="flex justify-center items-baseline">
-          <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">{price}</span>
+          <span className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+            {price}
+          </span>
           <span className="text-gray-500 dark:text-gray-400 ml-1">/month</span>
         </div>
       </div>
@@ -93,7 +112,11 @@ const PricingCard = ({
         {features.map((feature, index) => (
           <li
             key={index}
-            className={`flex items-center ${feature.included ? "text-gray-600 dark:text-gray-300" : "text-gray-400 dark:text-gray-500"}`}
+            className={`flex items-center ${
+              feature.included
+                ? "text-gray-600 dark:text-gray-300"
+                : "text-gray-400 dark:text-gray-500"
+            }`}
           >
             {feature.included ? (
               <svg
@@ -103,7 +126,12 @@ const PricingCard = ({
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                ></path>
               </svg>
             ) : (
               <svg
@@ -113,7 +141,12 @@ const PricingCard = ({
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
               </svg>
             )}
             <span>{feature.text}</span>
@@ -127,8 +160,8 @@ const PricingCard = ({
         </Button>
       </motion.div>
     </motion.div>
-  )
-}
+  );
+};
 
 const TestimonialCard = ({
   quote,
@@ -136,10 +169,10 @@ const TestimonialCard = ({
   role,
   delay = 0,
 }: {
-  quote: string
-  author: string
-  role: string
-  delay?: number
+  quote: string;
+  author: string;
+  role: string;
+  delay?: number;
 }) => {
   return (
     <motion.div
@@ -155,29 +188,33 @@ const TestimonialCard = ({
       <div className="flex items-center">
         <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600"></div>
         <div className="ml-3">
-          <h4 className="font-medium text-gray-900 dark:text-gray-100">{author}</h4>
+          <h4 className="font-medium text-gray-900 dark:text-gray-100">
+            {author}
+          </h4>
           <p className="text-sm text-gray-500 dark:text-gray-400">{role}</p>
         </div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
 const HomePage: React.FC = () => {
-  const router = useRouter()
-  const { user } = useAuth()
-  const { scrollYProgress } = useScroll()
-  const heroRef = useRef(null)
-  const heroInView = useInView(heroRef, { once: true })
+  const router = useRouter();
+  const { user } = useAuth();
+  const { scrollYProgress } = useScroll();
+  const heroRef = useRef(null);
+  const heroInView = useInView(heroRef, { once: true });
 
   const handleStartGenerator = () => {
     // Updated to redirect to the generator page
-    router.push("/generator")
-  }
+    router.push("/generator");
+  };
 
   const scrollToTestimonials = () => {
-    document.getElementById("testimonials")?.scrollIntoView({ behavior: "smooth" })
-  }
+    document
+      .getElementById("testimonials")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const basicFeatures = [
     { included: true, text: "3 plot generations per month" },
@@ -185,7 +222,7 @@ const HomePage: React.FC = () => {
     { included: true, text: "TXT export format" },
     { included: false, text: "Advanced genre settings" },
     { included: false, text: "Plot revision tools" },
-  ]
+  ];
 
   const professionalFeatures = [
     { included: true, text: "10 plot generations per month" },
@@ -193,7 +230,7 @@ const HomePage: React.FC = () => {
     { included: true, text: "DOCX, PDF, TXT exports" },
     { included: true, text: "All genre customizations" },
     { included: true, text: "Basic plot revision tools" },
-  ]
+  ];
 
   const premiumFeatures = [
     { included: true, text: "Unlimited plot generations" },
@@ -201,7 +238,7 @@ const HomePage: React.FC = () => {
     { included: true, text: "All export formats + Scrivener" },
     { included: true, text: "Advanced plot revision tools" },
     { included: true, text: "Priority support" },
-  ]
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -222,7 +259,11 @@ const HomePage: React.FC = () => {
               y: [0, 20, 0],
               scale: [1, 1.2, 1],
             }}
-            transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
           />
           <motion.div
             className="absolute top-1/4 right-1/4 w-60 h-60 bg-indigo-400 rounded-full opacity-10 blur-3xl"
@@ -231,7 +272,11 @@ const HomePage: React.FC = () => {
               y: [0, 30, 0],
               scale: [1, 1.3, 1],
             }}
-            transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+            transition={{
+              duration: 10,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
           />
           <motion.div
             className="absolute bottom-1/3 left-1/3 w-80 h-80 bg-purple-500 rounded-full opacity-10 blur-3xl"
@@ -240,7 +285,11 @@ const HomePage: React.FC = () => {
               y: [0, -30, 0],
               scale: [1, 1.2, 1],
             }}
-            transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+            transition={{
+              duration: 12,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
           />
         </div>
 
@@ -249,7 +298,9 @@ const HomePage: React.FC = () => {
             <motion.h1
               className="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight"
               initial={{ y: 20, opacity: 0 }}
-              animate={heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+              animate={
+                heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }
+              }
               transition={{ duration: 0.6 }}
             >
               Craft Your Book's Blueprint
@@ -257,18 +308,26 @@ const HomePage: React.FC = () => {
             <motion.p
               className="text-xl md:text-2xl text-indigo-100 mb-10"
               initial={{ y: 20, opacity: 0 }}
-              animate={heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+              animate={
+                heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }
+              }
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Generate comprehensive book plots and chapter outlines with perfect consistency and compelling narratives.
+              Generate comprehensive book plots and chapter outlines with
+              perfect consistency and compelling narratives.
             </motion.p>
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
               initial={{ y: 20, opacity: 0 }}
-              animate={heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+              animate={
+                heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }
+              }
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button
                   variant="secondary"
                   size="lg"
@@ -278,7 +337,10 @@ const HomePage: React.FC = () => {
                   Generate Your Plot
                 </Button>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button
                   variant="outline"
                   size="lg"
@@ -292,18 +354,29 @@ const HomePage: React.FC = () => {
             <motion.div
               className="mt-10 flex flex-wrap justify-center md:justify-start gap-8 text-indigo-100"
               initial={{ y: 20, opacity: 0 }}
-              animate={heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+              animate={
+                heroInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }
+              }
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              <motion.div className="flex items-center" whileHover={{ scale: 1.1, color: "#f59e0b" }}>
+              <motion.div
+                className="flex items-center"
+                whileHover={{ scale: 1.1, color: "#f59e0b" }}
+              >
                 <Sparkles className="h-5 w-5 mr-2" />
                 <span>AI-Powered</span>
               </motion.div>
-              <motion.div className="flex items-center" whileHover={{ scale: 1.1, color: "#f59e0b" }}>
+              <motion.div
+                className="flex items-center"
+                whileHover={{ scale: 1.1, color: "#f59e0b" }}
+              >
                 <BookOpen className="h-5 w-5 mr-2" />
                 <span>300-400 Page Outlines</span>
               </motion.div>
-              <motion.div className="flex items-center" whileHover={{ scale: 1.1, color: "#f59e0b" }}>
+              <motion.div
+                className="flex items-center"
+                whileHover={{ scale: 1.1, color: "#f59e0b" }}
+              >
                 <LayoutGrid className="h-5 w-5 mr-2" />
                 <span>Chapter-by-Chapter</span>
               </motion.div>
@@ -322,15 +395,25 @@ const HomePage: React.FC = () => {
               <motion.div
                 className="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg shadow-xl"
                 animate={{ rotateY: [-5, 5, -5] }}
-                transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+                transition={{
+                  duration: 6,
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "reverse",
+                }}
               >
                 <div className="absolute inset-0 p-6 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-xl font-serif font-bold text-white">The Crystal Kingdoms</h3>
-                    <p className="text-sm text-white/80 mt-2">A fantasy epic by PlotCraft AI</p>
+                    <h3 className="text-xl font-serif font-bold text-white">
+                      The Crystal Kingdoms
+                    </h3>
+                    <p className="text-sm text-white/80 mt-2">
+                      A fantasy epic by PlotCraft AI
+                    </p>
                   </div>
                   <div className="border-t border-white/20 pt-4">
-                    <p className="text-xs text-white/70">Generated with advanced AI technology</p>
+                    <p className="text-xs text-white/70">
+                      Generated with advanced AI technology
+                    </p>
                   </div>
                 </div>
 
@@ -359,7 +442,8 @@ const HomePage: React.FC = () => {
               See PlotCraft in Action
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Watch how our AI-powered platform helps writers create compelling stories in minutes.
+              Watch how our AI-powered platform helps writers create compelling
+              stories in minutes.
             </p>
           </motion.div>
 
@@ -382,48 +466,61 @@ const HomePage: React.FC = () => {
               Craft Your Book with Precision
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Our powerful tools give you everything you need to plan, structure, and develop your next bestseller.
+              Our powerful tools give you everything you need to plan,
+              structure, and develop your next bestseller.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard
-              icon={<Sparkles className="h-6 w-6 text-amber-700 dark:text-amber-500" />}
+              icon={
+                <Sparkles className="h-6 w-6 text-amber-700 dark:text-amber-500" />
+              }
               title="AI Plot Generation"
               description="Generate complete book outlines with consistent plots, character arcs, and thematic elements in seconds."
               delay={0}
             />
 
             <FeatureCard
-              icon={<Users className="h-6 w-6 text-indigo-700 dark:text-indigo-500" />}
+              icon={
+                <Users className="h-6 w-6 text-indigo-700 dark:text-indigo-500" />
+              }
               title="Character Development"
               description="Create multi-dimensional characters with detailed backgrounds, motivations, and transformative arcs."
               delay={0.1}
             />
 
             <FeatureCard
-              icon={<LayoutGrid className="h-6 w-6 text-emerald-700 dark:text-emerald-500" />}
+              icon={
+                <LayoutGrid className="h-6 w-6 text-emerald-700 dark:text-emerald-500" />
+              }
               title="Chapter Mapping"
               description="Structure your novel with detailed chapter-by-chapter outlines that ensure narrative coherence."
               delay={0.2}
             />
 
             <FeatureCard
-              icon={<BookOpen className="h-6 w-6 text-rose-700 dark:text-rose-500" />}
+              icon={
+                <BookOpen className="h-6 w-6 text-rose-700 dark:text-rose-500" />
+              }
               title="Genre Expertise"
               description="Tailored plot generation for any genre, from fantasy and sci-fi to mystery, romance, and literary fiction."
               delay={0.3}
             />
 
             <FeatureCard
-              icon={<Lightbulb className="h-6 w-6 text-purple-700 dark:text-purple-500" />}
+              icon={
+                <Lightbulb className="h-6 w-6 text-purple-700 dark:text-purple-500" />
+              }
               title="Idea Expansion"
               description="Transform simple concepts into rich, detailed narratives ready for writing, with all the complexity you need."
               delay={0.4}
             />
 
             <FeatureCard
-              icon={<Award className="h-6 w-6 text-blue-700 dark:text-blue-500" />}
+              icon={
+                <Award className="h-6 w-6 text-blue-700 dark:text-blue-500" />
+              }
               title="Export & Share"
               description="Download your completed plot in multiple formats or share directly with editors, writing partners, and publishers."
               delay={0.5}
@@ -442,16 +539,35 @@ const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-gray-100 mb-4">Subscription Plans</h2>
+            <h2 className="text-3xl font-serif font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Subscription Plans
+            </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Choose the plan that fits your creative needs, with flexible options for every writer.
+              Choose the plan that fits your creative needs, with flexible
+              options for every writer.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <PricingCard title="Basic" price="$9.99" features={basicFeatures} delay={0.1} />
-            <PricingCard title="Professional" price="$19.99" features={professionalFeatures} popular={true} delay={0} />
-            <PricingCard title="Premium" price="$39.99" features={premiumFeatures} delay={0.2} />
+            <PricingCard
+              title="Basic"
+              price="$9.99"
+              features={basicFeatures}
+              delay={0.1}
+            />
+            <PricingCard
+              title="Professional"
+              price="$19.99"
+              features={professionalFeatures}
+              popular={true}
+              delay={0}
+            />
+            <PricingCard
+              title="Premium"
+              price="$39.99"
+              features={premiumFeatures}
+              delay={0.2}
+            />
           </div>
         </div>
       </section>
@@ -470,7 +586,8 @@ const HomePage: React.FC = () => {
               What Writers Are Saying
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Join thousands of authors who've transformed their writing process with our plot generator.
+              Join thousands of authors who've transformed their writing process
+              with our plot generator.
             </p>
           </motion.div>
 
@@ -522,7 +639,8 @@ const HomePage: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            Join thousands of writers who are creating compelling, consistent book plots with our AI-powered generator.
+            Join thousands of writers who are creating compelling, consistent
+            book plots with our AI-powered generator.
           </motion.p>
           <motion.div
             initial={{ y: 20, opacity: 0 }}
@@ -544,7 +662,7 @@ const HomePage: React.FC = () => {
         </div>
       </motion.section>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

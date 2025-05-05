@@ -115,7 +115,7 @@ export default function AccountSettings() {
 
           <div className="flex items-center justify-between">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button type="submit" variant="primary" isLoading={loading}>
+              <Button type="submit" variant="primary">
                 Update Profile
               </Button>
             </motion.div>
@@ -193,7 +193,6 @@ export default function AccountSettings() {
               <Button
                 type="submit"
                 variant="primary"
-                isLoading={loading}
                 disabled={!currentPassword || !newPassword}
               >
                 Change Password
