@@ -1,22 +1,25 @@
 "use client";
 
+import { useGetProfile } from "@/api/useProfile";
 import ThemeToggle from "@/components/ThemeToggle";
 import Button from "@/components/ui/button";
+import { useProfileStore } from "@/store/useProfileStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen, Menu, User, X } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data: sessionData } = useSession();
-  const { user } = sessionData || {};
   const [isOpen, setIsOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { updateInfo, ...user } = useProfileStore();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -25,6 +28,27 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });
   };
+
+  // get user data
+  const { data, isLoading } = useGetProfile(
+    sessionData?.user?.id as string,
+    sessionData?.user?.id as string
+  );
+
+  useEffect(() => {
+    if (data?.id) {
+      updateInfo({
+        name: data?.name || "",
+        email: data?.email || "",
+        id: data?.id || "",
+        credits: data?.credits,
+      });
+    }
+
+    updateInfo({
+      isLoading,
+    });
+  }, [data, isLoading]);
 
   return (
     <motion.header

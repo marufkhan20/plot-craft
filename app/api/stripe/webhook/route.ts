@@ -32,6 +32,17 @@ export async function POST(req: NextRequest) {
           credits: { increment: credits },
         },
       });
+
+      // add purchase history
+      await prisma.purchaseHistory.create({
+        data: {
+          credits,
+          userId,
+          title: "1 Package",
+          price: session.amount_total ? session.amount_total / 100 : 0,
+          status: "COMPLETED",
+        },
+      });
     }
   }
 

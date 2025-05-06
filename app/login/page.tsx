@@ -1,13 +1,12 @@
 "use client";
 
 import Button from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import { LoginFormData, loginSchema } from "@/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -22,10 +21,6 @@ export default function LoginPage() {
   });
 
   const [isPending, setIsPending] = useState(false);
-
-  const { toast } = useToast();
-
-  const router = useRouter();
 
   const onSubmit = async (data: LoginFormData) => {
     const res = await signIn("credentials", {
@@ -157,6 +152,16 @@ export default function LoginPage() {
               </motion.div>
             </div>
           </form>
+
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?{" "}
+            <Link
+              href="/signup"
+              className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </motion.div>
     </div>

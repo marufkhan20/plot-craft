@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import authRoute from "@/server/routes/authRoute";
+import profileRoute from "@/server/routes/profileRoute";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
 const app = new Hono().basePath("/api");
 
-const routes = app.route("/", authRoute);
+const routes = app.route("/", authRoute).route("/profile", profileRoute);
 
 export const GET = handle(app);
 export const POST = handle(app);

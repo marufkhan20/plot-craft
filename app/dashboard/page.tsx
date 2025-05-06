@@ -7,6 +7,8 @@ import CreditHistory from "@/components/dashboard/CreditHistory";
 import MyBooks from "@/components/dashboard/MyBooks";
 import PaymentStatusModal from "@/components/dashboard/PaymentStatusModal";
 import Button from "@/components/ui/button";
+import { useProfileStore } from "@/store/useProfileStore";
+import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { Book, CreditCard, LogOut, Settings, ShoppingCart } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
@@ -17,11 +19,22 @@ export default function DashboardPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { data: sessionData, status } = useSession();
-  const { user } = sessionData || {};
+  const { status } = useSession();
+  const { isLoading, ...user } = useProfileStore();
+
+  if (status === "loading" || isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
   const [activeTab, setActiveTab] = useState<
     "plots" | "credits" | "settings" | "buy-credits"
   >("plots");
+
+  const queryClient = useQueryClient();
 
   // Handle logout
   const handleLogout = async () => {
@@ -39,6 +52,10 @@ export default function DashboardPage() {
     ) {
       setActiveTab(tabParam);
     }
+
+    if (searchParams.get("purchase_status") === "success") {
+      queryClient.invalidateQueries({ queryKey: ["user", user.id] });
+    }
   }, [searchParams]);
 
   // Handle tab change with URL update
@@ -52,11 +69,10 @@ export default function DashboardPage() {
     router.replace(url.pathname + url.search);
   };
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      return router.push("/login");
-    }
-  }, [status]);
+  if (status === "unauthenticated") {
+    router.push("/login");
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">

@@ -2,14 +2,13 @@
 
 import { useBuyCredits } from "@/api/buyCredits";
 import Button from "@/components/ui/button";
+import { useProfileStore } from "@/store/useProfileStore";
 import { motion } from "framer-motion";
 import { AlertCircle, Check, CreditCard, Info, Sparkles } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function BuyCredits() {
-  const { data: sessionData } = useSession();
-  const { user } = sessionData || {};
+  const user = useProfileStore();
 
   const [quantity, setQuantity] = useState(1);
 
