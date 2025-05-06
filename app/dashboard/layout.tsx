@@ -1,16 +1,16 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
-    // <Suspense
-    //   fallback={
-    //     <div className="flex h-screen w-full items-center justify-center">
-    //       Loading...
-    //     </div>
-    //   }
-    // >
-    children
-    // </Suspense>
+    <Suspense
+      fallback={
+        <div className="flex h-screen w-full items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      {children}
+    </Suspense>
   );
 };
 
